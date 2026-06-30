@@ -1,0 +1,57 @@
+#include <Servo.h>
+Servo myServo;
+int ldrPin = A0;
+int redPin = 3;
+int greenPin = 5;
+int bluePin = 6;
+int sensorValue = 0;
+void setup() 
+{
+  Serial.begin(9600);
+
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+
+  myServo.attach(9);
+}
+void loop()
+ {
+  sensorValue = analogRead(ldrPin);
+  Serial.println(sensorValue);
+
+  // 🔹 LOW LIGHT
+  if(sensorValue < 300)
+   {
+
+    digitalWrite(redPin, HIGH);
+    digitalWrite(greenPin, LOW);
+    digitalWrite(bluePin, LOW);
+
+    myServo.write(0);   // Left
+  }
+
+  // 🔹 MEDIUM LIGHT
+  else if(sensorValue >= 300 && sensorValue < 700) 
+  {
+
+    digitalWrite(redPin, LOW);
+    digitalWrite(greenPin, HIGH);
+    digitalWrite(bluePin, LOW);
+
+    myServo.write(90);  // Center
+  }
+
+  // 🔹 HIGH LIGHT
+  else
+   {
+
+    digitalWrite(redPin, LOW);
+    digitalWrite(greenPin, LOW);
+    digitalWrite(bluePin, HIGH);
+
+    myServo.write(180); // Right
+  }
+
+  delay(300);
+}
